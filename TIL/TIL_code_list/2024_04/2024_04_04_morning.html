@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/TIL_style.css">
+    <title>Title</title>
+</head>
+<body>
+<section class="ftco-section">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">2024년 4월 4일 오전</h2>
+        </div>
+    </div>
+    <div class="remote">
+        <button onclick="goBack()" class="btn btn-primary">뒤로가기</button>
+    </div>
+    <div class="position-center">
+        <div class="code-area">
+            <h4 class="code-head">스톱워치 만들기</h4>
+            <xmp class="code-text">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        #clockArea{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body>
+<div id="clockArea">
+    <h2>스탑워치</h2>
+    <h1><span id="minute">00</span>:<span id="second">00</span>.<span id="decimal">00</span></h1>
+    <button onclick="start()">start</button><button onclick="pause()">pause</button><button onclick="reset()">reset</button>
+</div>
+
+<script>
+    let min = document.getElementById('minute');
+    let sec = document.getElementById('second');
+    let dec = document.getElementById('decimal');
+
+    let startClock;
+
+    function start(){
+        startClock = setInterval(() => {
+            dec.innerText++;
+            dec.innerText = dec.innerText.padStart(2, 0);
+
+            if(dec.innerText == 100){
+                dec.innerText = '0'.padStart(2, 0);
+                sec.innerText++;
+                sec.innerText = sec.innerText.padStart(2, 0);
+            }
+
+            if(sec.innerText == 60){
+                sec.innerText = '0'.padStart(2, 0);
+                min.innerText++;
+                min.innerText = min.innerText.padStart(2, 0);
+            }
+        }, 10);
+    }
+
+    function pause() {
+        clearInterval(startClock);
+    }
+
+    function reset() {
+        min.innerText = '0'.padStart(2, 0);
+        sec.innerText = '0'.padStart(2, 0);
+        dec.innerText = '0'.padStart(2, 0);
+    }
+</script>
+</body>
+</html>
+            </xmp>
+        </div>
+    </div>
+</section>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>

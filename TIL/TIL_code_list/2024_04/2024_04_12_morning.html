@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/TIL_style.css">
+    <title>Title</title>
+</head>
+<body>
+<section class="ftco-section">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">2024년 4월 12일 오전</h2>
+        </div>
+    </div>
+    <div class="remote">
+        <button onclick="goBack()" class="btn btn-primary">뒤로가기</button>
+    </div>
+    <div class="position-center">
+        <div class="code-area">
+            <h4 class="code-head"></h4>
+            <xmp class="code-text">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+<button onclick="getText()">문자열</button>
+<button onclick="getHtml()">html</button>
+<button onclick="getXml()">xml</button>
+<button onclick="getJson()">json</button>
+<div id="result"></div>
+
+<script>
+    function getText(){
+        $.ajax({
+            url:"data.txt",
+            type:"post",
+            dataType:"text",
+            success:function(rec_data){
+                $('#result').text(rec_data);
+            }
+        });
+    }
+
+    function getHtml(){
+        $.ajax({
+            url:"data2.html",
+            type:"post",
+            dataType:"html",
+            success:function(rec_data){
+                $('#result').html(rec_data);
+            }
+        });
+    }
+
+    function getXml(){
+        $.ajax({
+            url:"data3.xml",
+            type:"post",
+            dataType:"xml",
+            success:function(rec_data){
+                let n=$(rec_data).find('data');
+
+                $(n).each(function(idx,obj){
+                    let food1=$(obj).find('food1');
+                    let food2=$(obj).find('food2');
+
+                    let food11=$(food1).text();
+                    let food22=$(food2).text();
+
+                    $('#result').append(food11+"<br>");
+                    $('#result').append(food22+"<br>");
+                })
+
+            }
+        });
+    }
+
+    function getJson(){
+        $.ajax({
+            url:"data4.json",
+            type:"post",
+            dataType:"json",
+            success:function(rec_data){
+                $('#result').append(rec_data.age+"<br>");
+                $('#result').append(rec_data.kg+"<br>");
+                $('#result').append(rec_data.name+"<br>");
+            }
+        });
+    }
+</script>
+</body>
+</html>
+            </xmp>
+        </div>
+    </div>
+</section>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>

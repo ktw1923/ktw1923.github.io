@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/TIL_style.css">
+    <title>Title</title>
+</head>
+<body>
+<section class="ftco-section">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">2024년 4월 3일 오후</h2>
+        </div>
+    </div>
+    <div class="remote">
+        <button onclick="goBack()" class="btn btn-primary">뒤로가기</button>
+    </div>
+    <div class="position-center">
+        <div class="code-area">
+            <h4 class="code-head">메뉴를 클릭하면 선택한 메뉴의 이름과 가격을 표시해주는 페이지</h4>
+            <xmp class="code-text">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+    </style>
+</head>
+<body>
+<div class="cafe">
+    <h2>커피 주문</h2>
+    <div class="coffee">
+        <h1 data-price = '4500' data-cafe = "아이스아메리카노">아이스아메리카노</h1>
+        <h1 data-price = '5000' data-cafe = "카푸치노">카푸치노</h1>
+        <h1 data-price = '7000' data-cafe = "스무디">스무디</h1>
+    </div>
+    <p>
+        <span id="order">메뉴없음</span>
+        <span id="price">0</span>원
+    </p>
+</div>
+<script>
+    let menu = document.querySelectorAll(".coffee h1");
+    let receipt = document.querySelectorAll(".cafe p span");
+
+    for(let i = 0; i < menu.length; i++){
+        menu[i].addEventListener('click', function() {
+            receipt[0].innerHTML = this.getAttribute('data-cafe');
+            receipt[1].innerHTML = this.dataset.price;
+        });
+    }
+</script>
+</body>
+</html>
+            </xmp>
+            <h4 class="code-head">랜덤문제 출제, 10초뒤에 자동으로 채점</h4>
+            <xmp class="code-text">
+html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        #questionArea div span{
+            display: inline-block;
+            width: 100px;
+            text-align: center;
+        }
+
+        #questionArea div input{
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+<h1>문제는 자동으로 생성되며, 10초가 지나면 자동 채점</h1>
+<h2>남은시간 10</h2>
+<hr>
+<div id="questionArea">
+    <div>
+        <span id="question1">1+1</span>
+        <input type="number" id="answer1">
+    </div>
+    <div>
+        <span id="question2">1+1</span>
+        <input type="number" id="answer2">
+    </div>
+    <div>
+        <span id="question3">1+1</span>
+        <input type="number" id="answer3">
+    </div>
+    <div>
+        <span id="question4">1+1</span>
+        <input type="number" id="answer4">
+    </div>
+    <button onclick="reset()">다시</button>
+    정답: <span id="result">0</sapn>개
+</div>
+
+<script src="quiz.js"></script>
+</body>
+</html>
+
+javascript
+
+let timer = document.getElementsByTagName('h2')[0];
+let timeLeft = 10;
+let question = document.getElementsByTagName('span');
+let answer = document.getElementsByTagName('input');
+let result = document.getElementById('result');
+
+
+setQuestion();
+
+let count = setInterval(() => {
+timeLeft--;
+
+timer.innerHTML = '남은시간 ' + timeLeft;
+}, 1000);
+
+function setQuestion(){
+for(let i = 0; i < question.length - 1; i++){
+let expression = Math.floor(Math.random() * 100);
+let operator = Math.floor(Math.random() * 2);
+
+if(operator == 0){
+expression += ' - ';
+}else{
+expression += ' + ';
+}
+
+expression += Math.floor(Math.random() * 100);
+
+question[i].innerHTML = expression;
+}
+}
+
+let score = setTimeout(() => {
+clearInterval(count);
+
+for(let i = 0; i < question.length - 1; i++){
+if(answer[i].value == eval(question[i].innerText)){
+result.innerText++;
+}else{
+question[i].style.textDecoration = 'line-through';
+answer[i].value = eval(question[i].innerText);
+answer[i].style.color = 'red';
+}
+}
+}, 10000);
+
+function reset(){
+setQuestion();
+clearTimeout(score);
+clearInterval(count);
+
+result.innerText = 0;
+timeLeft = 10;
+timer.innerHTML = '남은시간 ' + timeLeft;
+
+for(let i = 0; i < question.length - 1; i++){
+question[i].style.textDecoration = 'none';
+answer[i].value = '';
+answer[i].style.color = 'black';
+}
+
+count = setInterval(() => {
+timeLeft--;
+
+timer.innerHTML = '남은시간 ' + timeLeft;
+}, 1000);
+
+score = setTimeout(() => {
+clearInterval(count);
+
+for(let i = 0; i < question.length - 1; i++){
+if(answer[i].value == eval(question[i].innerText)){
+result.innerText++;
+}else{
+question[i].style.textDecoration = 'line-through';
+answer[i].value = eval(question[i].innerText);
+answer[i].style.color = 'red';
+}
+}
+}, 10000);
+
+}
+            </xmp>
+        </div>
+    </div>
+</section>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>

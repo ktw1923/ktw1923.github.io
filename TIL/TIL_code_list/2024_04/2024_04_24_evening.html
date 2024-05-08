@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/TIL_style.css">
+    <title>Title</title>
+</head>
+<body>
+<section class="ftco-section">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">2024년 4월 24일 저녁</h2>
+        </div>
+    </div>
+    <div class="remote">
+        <button onclick="goBack()" class="btn btn-primary">뒤로가기</button>
+    </div>
+    <div class="position-center">
+        <div class="code-area">
+            <h4 class="code-head">ACM Craft</h4>
+            <xmp class="code-text">
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        int testCaseNum = Integer.parseInt(br.readLine());
+        int buildingNum, roadNum;
+
+        while(testCaseNum-- > 0) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            buildingNum = Integer.parseInt(st.nextToken());
+            roadNum = Integer.parseInt(st.nextToken());
+
+            bfs = new LinkedList<>();
+            constructionTime = new int[buildingNum + 1];
+            requiredTime = new int[buildingNum + 1];
+            childToParent = new List[buildingNum + 1];
+            parentToChild = new List[buildingNum + 1];
+
+            for(int i = 0; i < buildingNum + 1; i++) {
+                childToParent[i] = new ArrayList<>();
+                parentToChild[i] = new ArrayList<>();
+            }
+
+            st = new StringTokenizer(br.readLine());
+            for(int i = 1; st.hasMoreTokens(); i++) {
+                constructionTime[i] = Integer.parseInt(st.nextToken());
+            }
+
+            for(int i = 0; i < roadNum; i++) {
+                st = new StringTokenizer(br.readLine());
+                int fromBuilding = Integer.parseInt(st.nextToken());
+                int toBuilding = Integer.parseInt(st.nextToken());
+
+                childToParent[fromBuilding].add(toBuilding);
+                parentToChild[toBuilding].add(fromBuilding);
+            }
+
+            goal = Integer.parseInt(br.readLine());
+
+            for(int i = 1; i < parentToChild.length; i++) {
+                if(parentToChild[i].isEmpty()){
+                    requiredTime[i] = constructionTime[i];
+
+                    for(int j : childToParent[i]){
+                        bfs.add(j);
+                    }
+                }
+            }
+
+            while(!bfs.isEmpty()) {
+                getRequiredTime();
+            }
+
+            bw.write(String.valueOf(requiredTime[goal]));
+            bw.newLine();
+        }
+
+        br.close();
+        bw.close();
+    }
+    static int[] constructionTime, requiredTime;
+    static List<Integer>[] childToParent, parentToChild;
+    static Queue<Integer> bfs;
+    static int goal;
+
+    public static void getRequiredTime(){
+        int building = bfs.poll();
+
+        if(requiredTime[building] != 0){
+            return;
+        }
+
+        int longest = 0;
+
+        for(int i : parentToChild[building]){
+            if(requiredTime[i] == 0){
+                return;
+            }
+
+            if(requiredTime[i] > longest){
+                longest = requiredTime[i];
+            }
+        }
+
+        requiredTime[building] = longest + constructionTime[building];
+
+        if(requiredTime[goal] != 0){
+            bfs.clear();
+            return;
+        }
+
+        for(int i : childToParent[building]){
+            bfs.add(i);
+        }
+    }
+}
+            </xmp>
+        </div>
+    </div>
+</section>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>

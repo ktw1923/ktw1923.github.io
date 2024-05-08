@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/TIL_style.css">
+    <title>Title</title>
+</head>
+<body>
+<section class="ftco-section">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">2024년 4월 17일 오전</h2>
+        </div>
+    </div>
+    <div class="remote">
+        <button onclick="goBack()" class="btn btn-primary">뒤로가기</button>
+    </div>
+    <div class="position-center">
+        <div class="code-area">
+            <h4 class="code-head">회원가입 정보를 폼으로 입력받고, 다음 페이지로 쿼리 스트림을 이용해서 정보를 넘겨주는 사이트</h4>
+            <xmp class="code-text">
+xml
+
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>radio</title>
+</head>
+<body>
+<form method="get" action="/RServlet">
+    <input type="radio" id="male" name="gender" value="남자" checked><label for="male">남자</label>
+    <input type="radio" id="female" name="gender" value="여자"><label for="female">여자</label><br><br>
+
+    메일 수신 여부:
+    <input type="radio" id="agree" name="ch_mail" value="yes" checked><label for="agree">동의</label>
+    <input type="radio" id="disagree" name="ch_mail" value="no"><label for="disagree">비동의</label><br><br>
+
+    <label for="con">인사</label>
+    <textarea rows="3" cols="30" id="con" name="con"></textarea><br>
+
+    <input type="submit" value="전송">
+</form>
+</body>
+</html>
+
+servlet
+
+package com.jihun.jihunArtifact;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+@WebServlet("/RServlet")
+public class RServlet extends HttpServlet {
+    public RServlet(){
+        super();
+    }
+@Override
+protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    response.setContentType("text/html; charset=UTF-8");
+
+    PrintWriter out = response.getWriter();
+    String gender = request.getParameter("gender");
+    String isAgree = request.getParameter("ch_mail");
+    String hello = request.getParameter("con");
+
+    out.println(gender + "<br>" + isAgree + "<br>" + hello);
+
+}
+
+@Override
+protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    }
+}
+            </xmp>
+        </div>
+    </div>
+</section>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>

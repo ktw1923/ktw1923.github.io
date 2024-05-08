@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/TIL_style.css">
+    <title>Title</title>
+</head>
+<body>
+<section class="ftco-section">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">2024년 4월 26일 저녁</h2>
+        </div>
+    </div>
+    <div class="remote">
+        <button onclick="goBack()" class="btn btn-primary">뒤로가기</button>
+    </div>
+    <div class="position-center">
+        <div class="code-area">
+            <h4 class="code-head">뉴스 전하기</h4>
+            <xmp class="code-text">
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        int N = Integer.parseInt(br.readLine());
+        employeeList = new EmployeeNode[N];
+
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+
+        for(int i = 0; i < N; i++){
+            int bossNum = Integer.parseInt(st.nextToken());
+            employeeList[i] = new EmployeeNode(i, bossNum);
+        }
+
+        for(EmployeeNode node : employeeList){
+            setLongestDepth(node);
+        }
+
+        Queue<EmployeeNode> bfs = new LinkedList<>();
+        bfs.add(employeeList[0]);
+
+        setTookTime(bfs);
+
+        br.close();
+        bw.close();
+    }
+
+    public static EmployeeNode[] employeeList;
+
+    public static class EmployeeNode{
+        private final int employeeNum;
+        private EmployeeNode parent;
+        private List<EmployeeNode> children;
+        private int depth;
+        private int longestDepth;
+        private int tookTime;
+
+        public EmployeeNode(int employeeNum, int parentNum){
+            this.employeeNum = employeeNum;
+            this.depth = 0;
+            this.longestDepth = 0;
+            tookTime = 0;
+            setParent(parentNum);
+            children = new ArrayList<>();
+        }
+
+        public void setParent(int parentNum){
+            if(parentNum == -1){
+                return;
+            }
+            this.parent = employeeList[parentNum];
+            this.parent.setChild(this.employeeNum);
+            this.depth = parent.getDepth() + 1;
+        }
+
+        public void setChild(int childNum){
+            this.children.add(employeeList[childNum]);
+        }
+
+        public int getEmployeeNum(){
+            return this.employeeNum;
+        }
+
+        public EmployeeNode getParent(){
+            return this.parent;
+        }
+
+        public List<EmployeeNode> getChildren(){
+            return this.children;
+        }
+
+        public int getDepth(){
+            return this.depth;
+        }
+
+        public int getLongestDepth(){
+            return this.longestDepth;
+        }
+
+        public void setLongestDepth(int longestDepth){
+            this.longestDepth = longestDepth;
+        }
+
+        public void setTookTime(int tookTime){
+            this.tookTime = tookTime;
+        }
+
+        public int getTookTime(){
+            return this.tookTime;
+        }
+    }
+
+    public static void setLongestDepth(EmployeeNode node){
+        List<EmployeeNode> children = node.getChildren();
+        if(children.isEmpty()){
+            node.setLongestDepth(node.getDepth());
+            setLongestDepth(node.getParent());
+            return;
+        }
+
+        int longestDepth = -1;
+
+        for(EmployeeNode child : children){
+            if(child.getLongestDepth() == 0){
+                return;
+            }
+
+            if(child.getLongestDepth() > longestDepth){
+                longestDepth = child.getLongestDepth();
+            }
+        }
+
+        node.setLongestDepth(longestDepth);
+        setLongestDepth(node.getParent());
+    }
+
+    public static void setTookTime(Queue<EmployeeNode> bfs){
+        if(bfs.isEmpty()){
+            return;
+        }
+
+
+    }
+}
+            </xmp>
+        </div>
+    </div>
+</section>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>

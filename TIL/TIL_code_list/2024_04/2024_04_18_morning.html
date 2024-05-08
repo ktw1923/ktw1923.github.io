@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/TIL_style.css">
+    <title>Title</title>
+</head>
+<body>
+<section class="ftco-section">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">2024년 4월 18일 오전</h2>
+        </div>
+    </div>
+    <div class="remote">
+        <button onclick="goBack()" class="btn btn-primary">뒤로가기</button>
+    </div>
+    <div class="position-center">
+        <div class="code-area">
+            <h4 class="code-head">select로 여러 개의 값을 한번에 선택해서 값을 넘겨줌(jsp)</h4>
+            <xmp class="code-text">
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+<form method="get" action="/Select">
+    <span style="float: left; margin-right: 10px">
+        <label for="job">직업</label>
+        <select id="job" name="job" size="4" multiple>
+            <option value="">선택</option>
+            <option value="학생">학생</option>
+            <option value="개발자">개발자</option>
+            <option value="언론인">언론인</option>
+        </select>
+    </span>
+
+
+    <label for="hobby" style="float: left">취미</label>
+    <select id="hobby" name="hobby" size="1">
+        <option value="">선택</option>
+        <option value="축구">축구</option>
+        <option value="볼링">볼링</option>
+        <option value="게임">게임</option>
+    </select>
+    <br><br>
+    <input type="submit" value="전송" style="float: right; margin-right: 50px">
+</form>
+</body>
+</html>
+            </xmp>
+            <h4 class="code-head">select로 여러 개의 값을 한번에 선택해서 값을 넘겨줌(servlet)</h4>
+            <xmp class="code-text">
+package com.jihun.jihunArtifact;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+@WebServlet("/Select")
+public class Select extends HttpServlet {
+
+    public Select() {
+        super();
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html; charset=UTF-8");
+
+        String job[] = request.getParameterValues("job");
+        String hobby = request.getParameter("hobby");
+
+        PrintWriter out = response.getWriter();
+        for(String jobs : job){
+            out.println(jobs);
+        }
+        out.println(hobby);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    }
+}
+            </xmp>
+        </div>
+    </div>
+</section>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>

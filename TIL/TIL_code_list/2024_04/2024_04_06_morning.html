@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/TIL_style.css">
+    <title>Title</title>
+</head>
+<body>
+<section class="ftco-section">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">2024년 4월 6일 오전</h2>
+        </div>
+    </div>
+    <div class="remote">
+        <button onclick="goBack()" class="btn btn-primary">뒤로가기</button>
+    </div>
+    <div class="position-center">
+        <div class="code-area">
+            <h4 class="code-head">n번째 요소를 지정하는 방법</h4>
+            <xmp class="code-text">
+<!DOCTYPE html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+        .di div{
+            border:2px solid salmon;
+            width: 100px;
+            height: 100px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+<div class="di">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+</div>
+<script>
+    $('.di div').eq(2).css('background-color','red');
+    //인덱스 2의 배경색 red
+    $('.di div:nth-child(2)').css('background-color','blue');
+    //2번째 자식요소 배경색 blue
+    $('.di div:first-child').css('background-color','yellow');
+    $('.di div:last-child').css('background-color','yellow');
+</script>
+</body>
+</html>
+            </xmp>
+            <h4 class="code-head">다양한 조건에 맞는 요소들을 지정하는 방법</h4>
+            <xmp class="code-text">
+<!DOCTYPE html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+        .di div{
+            border:2px solid salmon;
+            width: 100px;
+            height: 100px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+<div class="di">
+    <div></div>
+    <div></div>
+    <div class="target"></div>
+    <div></div>
+    <div><span>span</span></div>
+</div>
+<script>    //선택된 인덱스부터 다음의 모든 요소 선택
+            //$('.di div:gt(2)').css('background-color','yellow');
+$('.di div:lt(2)').css('background-color','yellow');
+// $('.di div').not('.target').css('background-color','yellow');
+$('.di div').has('span').css('background-color','yellow');
+</script>
+</body>
+
+</html>
+            </xmp>
+        </div>
+    </div>
+</section>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>

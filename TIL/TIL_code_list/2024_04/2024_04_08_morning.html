@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/TIL_style.css">
+    <title>Title</title>
+</head>
+<body>
+<section class="ftco-section">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">2024년 4월 8일 오전</h2>
+        </div>
+    </div>
+    <div class="remote">
+        <button onclick="goBack()" class="btn btn-primary">뒤로가기</button>
+    </div>
+    <div class="position-center">
+        <div class="code-area">
+            <h4 class="code-head">각 목차를 누르면 하위 항목이 슬라이드 되어 나오고, 다른 항목은 들어감</h4>
+            <xmp class="code-text">
+<!DOCTYPE html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+        .cafe{
+            list-style: none;
+            width: 200px;
+        }
+
+        .cafe li > a, .sub a{
+            text-decoration: none;
+            color: whitesmoke;
+            text-align: capitalize;     /* 앞글자 대문자 */
+        }
+
+        .cafe li > a{
+            background-color: blueviolet;
+            border-bottom: 1px solid black;
+            display: block;
+        }
+
+        .sub{
+            display: none;
+        }
+
+        .sub a:hover{
+            background-color: pink;
+        }
+
+        .cafe li > a:after{
+            float: left;
+            content: '+';
+        }
+
+    </style>
+</head>
+<body>
+<ul class="cafe">
+    <li>
+        <a href="#menu">home</a>
+        <div class="sub">
+            <a href="#menu">americano</a>
+            <a href="#menu">latte</a>
+            <a href="#menu">capuccino</a>
+        </div>
+    </li>
+    <li>
+        <a href="#menu">sandwich</a>
+        <div class="sub">salmon sandwich</div>
+    </li>
+    <li>
+        <a href="#menu">salad</a>
+        <div class="sub">chicken salad</div>
+    </li>
+</ul>
+<script>
+    $('.sub').eq(0).show();
+
+    $('.cafe li > a').click(function() {
+        $(this).next().slideDown();
+        $(this).parent().siblings().children('.sub').slideUp();
+    })
+</script>
+</body>
+
+</html>
+            </xmp>
+            <h4 class="code-head">버튼을 누르면 노락색 박스의 모양이 변경됨</h4>
+            <xmp class="code-text">
+<!DOCTYPE html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+        .box{
+            width: 100px;
+            height: 100px;
+            background-color: yellow;
+            margin:10px 0;
+        }
+        .di{
+            width: 200px;
+        }
+        .bu{
+            display: flex;
+            gap:5px;
+        }
+        .bu button{
+            flex:1;
+        }
+    </style>
+</head>
+<body>
+<div class="di">
+    <div class="bu">
+        <button>show</button>
+        <button>hide</button>
+        <button>toggle</button>
+    </div>
+    <div class="box"></div>
+</div>
+<script>
+    $('.bu button:nth-child(1)').click(function(){
+        $('.box').animate({
+            height:'show'})
+    })
+
+    $('.bu button:nth-child(2)').click(function(){
+        $('.box').animate({
+            height:'hide'})
+    })
+
+    $('.bu button:nth-child(3)').click(function(){
+        $('.box').animate({
+            height:'toggle'})
+    })
+
+
+</script>
+</body>
+
+</html>
+            </xmp>
+        </div>
+    </div>
+</section>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>

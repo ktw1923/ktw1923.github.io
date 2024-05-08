@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/TIL_style.css">
+    <title>Title</title>
+</head>
+<body>
+<section class="ftco-section">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">2024년 5월 1일 저녁</h2>
+        </div>
+    </div>
+    <div class="remote">
+        <button onclick="goBack()" class="btn btn-primary">뒤로가기</button>
+    </div>
+    <div class="position-center">
+        <div class="code-area">
+            <h4 class="code-head">컨테이너를 이용해서 빈을 생성하고 사용해보기</h4>
+            <h5 class="code-head">Data.java</h5>
+            <xmp class="code-text">
+package beans;
+
+public class Data {
+    public Data(){
+        System.out.println("Data 생성자");
+    }
+}
+            </xmp>
+            <h5 class="code-head">Test.java</h5>
+            <xmp class="code-text">
+package beans;
+
+public class Test {
+    private int d1;
+    private double d2;
+    private String d3;
+
+    public Test(){
+        System.out.println("Test생성자");
+        this.d1=0;
+        this.d2=0.0;
+        this.d3=null;
+    }
+
+    public Test(int d1){
+        System.out.println("Test 매개변수 int 생성자");
+        this.d1=d1;
+        this.d2=0.0;
+        this.d3=null;
+    }
+
+    public Test(double d2){
+        System.out.println("Test 매개변수 double 생성자");
+        this.d1=0;
+        this.d2=d2;
+        this.d3=null;
+    }
+
+    public Test(String d3){
+        System.out.println("Test 매개변수 String 생성자");
+        this.d1=0;
+        this.d2=0.0;
+        this.d3=d3;
+    }
+
+    public Test(int d1, double d2, String d3){
+        System.out.println("Test 매개변수 int, double, String 생성자");
+        this.d1=d1;
+        this.d2=d2;
+        this.d3=d3;
+    }
+
+    public void show(){
+        System.out.println(d1);
+        System.out.println(d2);
+        System.out.println(d3);
+    }
+}            </xmp>
+            <h5 class="code-head">Test2.java</h5>
+            <xmp class="code-text">
+package beans;
+
+public class Test2 {
+    private Data d1;
+    private Data d2;
+
+    public Test2(Data d1, Data d2){
+        System.out.println("Test2 매개변수 Data 생성자");
+        this.d1 = d1;
+        this.d2 = d2;
+    }
+
+    public void show(){
+        System.out.println(d1);
+        System.out.println(d2);
+    }
+}
+            </xmp>
+            <h5 class="code-head">beans.xml</h5>
+            <xmp class="code-text">
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	                    http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="test" class="beans.Test" lazy-init="true"/>
+
+    <bean id="test2" class="beans.Test" lazy-init="true">
+        <constructor-arg value="10" type="int"/>
+    </bean>
+
+    <bean id="test3" class="beans.Test" lazy-init="true">
+        <constructor-arg value="10.1" type="double"/>
+    </bean>
+
+    <bean id="test4" class="beans.Test" lazy-init="true">
+        <constructor-arg value="문자열"/>
+    </bean>
+
+    <bean id="test5" class="beans.Test" lazy-init="true">
+        <constructor-arg value="10" type="int" index="0"/>
+        <constructor-arg value="10.1" type="double" index="1"/>
+        <constructor-arg value="문자열" index="2"/>
+    </bean>
+
+<!--    생성자의 매개변수로 객체를 넣음-->
+    <bean id="test6" class="beans.Test2">
+        <constructor-arg>
+            <bean class="beans.Data"/>
+        </constructor-arg>
+        <constructor-arg>
+            <bean class="beans.Data"/>
+        </constructor-arg>
+    </bean>
+
+    <bean id="data" class="beans.Data" scope="prototype"/>
+
+    <bean id="test7" class="beans.Test2">
+        <constructor-arg ref="data"/>
+        <constructor-arg ref="data"/>
+    </bean>
+
+</beans>
+            </xmp>
+            <h5 class="code-head">MainClass.java</h5>
+            <xmp class="code-text">
+package main;
+
+import beans.Test;
+import beans.Test2;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class MainClass {
+    public static void main(String[] args) {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("config/beans.xml");
+
+        Test test = context.getBean("test", Test.class);
+        test.show();
+
+        System.out.println();
+        Test test2 = context.getBean("test2", Test.class);
+        test2.show();
+
+        System.out.println();
+        Test test3 = context.getBean("test3", Test.class);
+        test3.show();
+
+        System.out.println();
+        Test test4 = context.getBean("test4", Test.class);
+        test4.show();
+
+        System.out.println();
+        Test test5 = context.getBean("test5", Test.class);
+        test5.show();
+
+        System.out.println();
+        Test2 test6 = context.getBean("test6", Test2.class);
+        test6.show();
+
+        System.out.println();
+        Test2 test7 = context.getBean("test7", Test2.class);
+        test7.show();
+    }
+
+}
+            </xmp>
+        </div>
+    </div>
+</section>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/TIL_style.css">
+    <title>Title</title>
+</head>
+<body>
+<section class="ftco-section">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">2024년 4월 3일 오전</h2>
+        </div>
+    </div>
+    <div class="remote"><button onclick="goBack()" class="btn btn-primary">뒤로가기</button></div>
+    <div class="position-center">
+        <div class="code-area">
+            <h4 class="code-head">자손과 이웃의 DOM 얻기</h4>
+            <xmp class="code-text">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        .news{
+            border: 1px solid gray;
+            padding: 20px;
+            border-radius: 10px;
+            width: 500px;
+        }
+    </style>
+</head>
+<body>
+<div class="news">
+    <h1>대통령이 의료분야에 대한 재정투자 발언</h1>
+    <div class="subtitle">
+        <h2>국무회의에서 했다</h2>
+    </div>
+    <p>
+        윤 대통령은 이날 정부세종청사에서 주재한 국무회의 모두발언에서 이같이 지시했다.
+        윤 대통령은 “저는 그동안 보건의료 분야를 안보, 치안과 같은 국가의 본질적인 기능이라고 보고
+        여기에도 막대한 재정을 투입해야 한다고 강조해 왔다”며 의료분야에 대한 과감한 재정투자를 약속했다.
+    </p>
+</div>
+
+<script>
+    let newsDOM = document.querySelector('.news');
+    let subtitleDOM = document.querySelector('.subtitle');
+    let subtitleHead = document.querySelector('.subtitle h2');
+
+    // p태그 선택
+    subtitleDOM.nextElementSibling.style.border='2px solid red';
+    // h1태그 선택
+    subtitleDOM.previousElementSibling.style.border = '2px dotted blue';
+
+    // 첫번째 자손
+    newsDOM.firstChild.textContent = '첫번째 텍스트';
+    // 마지막 자손
+    newsDOM.lastChild.textContent = '마지막 텍스트';
+
+    // 공백을 뺀 첫번째 자손
+    newsDOM.firstElementChild.style.color = 'red';
+    // 공백을 뺀 마지막 자손
+    newsDOM.lastElementChild.style.color = 'blue';
+
+</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        .news{
+            border: 1px solid gray;
+            padding: 20px;
+            border-radius: 10px;
+            width: 500px;
+        }
+    </style>
+</head>
+<body>
+<div class="news">
+    <h1>대통령이 의료분야에 대한 재정투자 발언</h1>
+    <div class="subtitle">
+        <h2>국무회의에서 했다</h2>
+    </div>
+    <p>
+        윤 대통령은 이날 정부세종청사에서 주재한 국무회의 모두발언에서 이같이 지시했다.
+        윤 대통령은 “저는 그동안 보건의료 분야를 안보, 치안과 같은 국가의 본질적인 기능이라고 보고
+        여기에도 막대한 재정을 투입해야 한다고 강조해 왔다”며 의료분야에 대한 과감한 재정투자를 약속했다.
+    </p>
+</div>
+
+<script>
+    let newsDOM = document.querySelector('.news');
+    let subtitleDOM = document.querySelector('.subtitle');
+    let subtitleHead = document.querySelector('.subtitle h2');
+
+    // p태그 선택
+    subtitleDOM.nextElementSibling.style.border='2px solid red';
+    // h1태그 선택
+    subtitleDOM.previousElementSibling.style.border = '2px dotted blue';
+
+    // 첫번째 자손
+    newsDOM.firstChild.textContent = '첫번째 텍스트';
+    // 마지막 자손
+    newsDOM.lastChild.textContent = '마지막 텍스트';
+
+    // 공백을 뺀 첫번째 자손
+    newsDOM.firstElementChild.style.color = 'red';
+    // 공백을 뺀 마지막 자손
+    newsDOM.lastElementChild.style.color = 'blue';
+
+</script>
+</body>
+</html>
+            </xmp>
+            <h4 class="code-head">폼 안의 DOM 얻기</h4>
+            <xmp class="code-text">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        .news{
+            border: 1px solid gray;
+            padding: 20px;
+            border-radius: 10px;
+            width: 500px;
+        }
+    </style>
+</head>
+<body>
+<form name="test">
+    <input type="text" name="question">
+</form>
+
+<script>
+    //document.폼네임.요소네임
+    //document.forms['폼네임'].elements['요소네임']
+    //document.forms['폼네임']['요소네임']
+    let question = document.test.question;
+    question.style.border = '2ps solid red';
+
+    question = document.forms['test'].elements['question'];
+    question.style.backgroundColor = 'yellow';
+
+    question = document.forms['test']['question'];
+    question.style.padding = '20px';
+</script>
+</body>
+</html>
+            </xmp>
+        </div>
+    </div>
+</section>
+
+<script>
+    function goBack(){
+        window.history.back();
+    }
+</script>
+</body>
+</html>

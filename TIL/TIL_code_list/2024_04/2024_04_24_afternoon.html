@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/TIL_style.css">
+    <title>Title</title>
+</head>
+<body>
+<section class="ftco-section">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">2024년 4월 24일 오후</h2>
+        </div>
+    </div>
+    <div class="remote">
+        <button onclick="goBack()" class="btn btn-primary">뒤로가기</button>
+    </div>
+    <div class="position-center">
+        <div class="code-area">
+            <h4 class="code-head">기본 JSTL 사용법 연습</h4>
+            <xmp class="code-text">
+<%@ taglib prefix="C" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+</head>
+<body>
+    <%
+    String movie[] = {"파묘", "쿵푸팬더", "윙카"};
+    pageContext.setAttribute("movie", movie);
+    %>
+
+    <C:forEach var="movie" items="${movie}" varStatus="status">
+        <C:choose>
+            <C:when test="${status.first}">
+                <li style="color:red;">${movie}</li>
+            </C:when>
+            <C:otherwise>
+                <li>${movie}</li>
+            </C:otherwise>
+        </C:choose>
+    </C:forEach>
+    <hr>
+    <C:forEach begin="1" end="10" var="cnt" varStatus="status">
+        ${cnt}
+        <C:if test="${not status.last}">,</C:if>
+    </C:forEach>
+    <hr>
+    <C:forEach var="cnt" begin="7" end="10" varStatus="status">
+        ${status.index}<br>
+        ${status.count}<br>
+        ${cnt}<br>
+        ${status.first}<br>
+    </C:forEach>
+</body>
+</html>
+            </xmp>
+            <h4 class="code-head">예외 처리</h4>
+            <xmp class="code-text">
+<%@ taglib prefix="C" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+</head>
+<body>
+    <C:set var="age" value="30" scope="page"></C:set>
+    age: <C:out value="${age}">10</C:out>
+    <hr>
+    <C:catch var="errmsg">
+        예외 전<br>
+        <%=1/0%>
+        예외 후<br>
+    </C:catch>
+
+    <C:out value="${errmsg}"/>
+</body>
+</html>
+            </xmp>
+        </div>
+    </div>
+</section>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>

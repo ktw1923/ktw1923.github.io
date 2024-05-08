@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/TIL_style.css">
+    <title>Title</title>
+</head>
+<body>
+<section class="ftco-section">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">2024년 4월 15일 오전</h2>
+        </div>
+    </div>
+    <div class="remote">
+        <button onclick="goBack()" class="btn btn-primary">뒤로가기</button>
+    </div>
+    <div class="position-center">
+        <div class="code-area">
+            <h4 class="code-head"></h4>
+            <xmp class="code-text">
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+    </style>
+</head>
+<body>
+
+<script>
+    const user = {
+        name: 'kim',
+        age: 43,
+        man: true
+    };
+
+    const post = {
+        title: '제목',
+        content: '내용',
+        user    //user: user과 같다. 변수의 이름과 값이 같을 경우
+    };
+
+    console.log(user.name === user['name']);
+    console.log(user.name);
+    console.log(user['name']);
+
+    console.log(post.user.age);
+
+    const user2 = {
+        name: 'lee',
+    }
+
+    user2.man = false;
+    console.log(user2);
+
+    delete user2.man;
+    //에러가 뜸
+    //console.log(man in user2);
+
+    const user3 = {
+        name: "Eom",
+        age: 43,
+        man: true,
+        on: function(){
+            console.log(`${user3.name}은 개발자이다`);
+        }
+    };
+    user3.on();
+</script>
+</body>
+</html>
+            </xmp>
+            <h4 class="code-head"></h4>
+            <xmp class="code-text">
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+    </style>
+</head>
+<body>
+
+<script>
+    //함수
+    function cal(a, b){
+        return (a + b) * 2;
+    }
+    const n = cal(1, 2);
+    console.log(n);
+
+    //익명 함수
+    const cal2 = function(a, b){
+        return (a + b) * 2;
+    }
+    console.log(cal2(1, 2));
+
+    //화살표 함수
+    const cal3 = (a, b) =>{
+        return (a + b) * 2;
+    }
+    const cal4 = (a, b) => (a + b) * 2;
+    console.log(cal3(1, 2));
+    console.log(cal4(1, 2));
+</script>
+</body>
+</html>
+            </xmp>
+        </div>
+    </div>
+</section>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>

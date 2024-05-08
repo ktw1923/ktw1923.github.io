@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/TIL_style.css">
+    <title>Title</title>
+</head>
+<body>
+<section class="ftco-section">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">2024년 5월 2일 저녁</h2>
+        </div>
+    </div>
+    <div class="remote">
+        <button onclick="goBack()" class="btn btn-primary">뒤로가기</button>
+    </div>
+    <div class="position-center">
+        <div class="code-area">
+            <h4 class="code-head">탈출</h4>
+            <xmp class="code-text">
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static class TimerStatus{
+        private int number;
+        private int time;
+
+        TimerStatus(int number, int time){
+            this.number = number;
+            this.time = time;
+        }
+
+        public int getNumber(){
+            return number;
+        }
+
+        public int getTime(){
+            return time;
+        }
+    }
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        bfsQueue = new LinkedList<>();
+        history = new HashSet<>();
+
+        N = Integer.parseInt(st.nextToken());
+        T = Integer.parseInt(st.nextToken());
+        G = Integer.parseInt(st.nextToken());
+
+        if(N == G){
+            answer = 0;
+        }else {
+            history.add(N);
+            bfsQueue.add(new TimerStatus(N, 0));
+        }
+
+        while (!bfsQueue.isEmpty()) {
+            escape();
+        }
+
+        if(answer == -1){
+            bw.write("ANG");
+            bw.newLine();
+        }else{
+            bw.write(String.valueOf(answer));
+            bw.newLine();
+        }
+
+        br.close();
+        bw.close();
+    }
+
+    public static int N, T, G;
+    public static int answer = -1;
+    public static Queue<TimerStatus> bfsQueue;
+    public static Set<Integer> history;
+
+    public static void escape(){
+        TimerStatus ts = bfsQueue.poll();
+        int n = ts.getNumber();
+        int t = ts.getTime() + 1;
+
+        int aNum = pressA(n);
+        int bNum = pressB(n);
+
+        if(aNum != -1){
+            if(aNum == G){
+                answer = t;
+                bfsQueue.clear();
+                return;
+            }
+
+            if(t < T){
+                if(history.add(aNum)) {
+                    bfsQueue.add(new TimerStatus(aNum, t));
+                }
+            }
+        }
+
+        if(bNum != -1){
+            if(bNum == G){
+                answer = t;
+                bfsQueue.clear();
+                return;
+            }
+
+            if(t < T){
+                if(history.add(bNum)) {
+                    bfsQueue.add(new TimerStatus(bNum, t));
+                }
+            }
+        }
+    }
+
+    public static int pressA(int num){
+        if(++num > 99999){
+            return -1;
+        }else{
+            return num;
+        }
+    }
+
+    public static int pressB(int num){
+        if(num == 0){
+            return 0;
+        }
+
+        num *= 2;
+
+        if(num > 99999){
+            return -1;
+        }
+
+        int i = 1;
+
+        while(true){
+            if((num / i) >= 1){
+                i *= 10;
+            }else{
+                i /= 10;
+                break;
+            }
+        }
+
+        return num - i;
+    }
+}
+            </xmp>
+        </div>
+    </div>
+</section>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>

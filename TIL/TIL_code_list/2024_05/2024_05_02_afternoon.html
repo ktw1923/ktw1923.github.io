@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/TIL_style.css">
+    <title>Title</title>
+</head>
+<body>
+<section class="ftco-section">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">2024년 5월 5일 오후</h2>
+        </div>
+    </div>
+    <div class="remote">
+        <button onclick="goBack()" class="btn btn-primary">뒤로가기</button>
+    </div>
+    <div class="position-center">
+        <div class="code-area">
+            <h4 class="code-head">어노테이션과 자바 컨테이너를 활용하여 빈을 초기화해보기</h4>
+            <h5 class="code-head">BeanClass.java</h5>
+            <xmp class="code-text">
+package beans;
+
+import beans2.Test3;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+// beans2, beans3 패키지에 어노테이션이 있는지 검사한다(Component, Service, controller, repository 등)
+@ComponentScan(basePackages = "beans2")
+@ComponentScan(basePackages = "beans3")
+public class BeanClass {
+
+    @Bean
+    public Test1 test1(){
+        return new Test1();
+    }
+
+    @Bean
+    public Test2 test2(){
+        return new Test2();
+    }
+
+    @Bean
+    public Test3 test3(){
+        return new Test3();
+    }
+
+}
+            </xmp>
+            <h5 class="code-head">MainClass.java</h5>
+            <xmp class="code-text">
+package main;
+
+import beans.*;
+import beans2.Test3;
+import beans2.Test4;
+import beans3.Test5;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+public class MainClass {
+    public static void main(String[] args) {
+        //ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("config/beans.xml");
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(BeanClass.class);
+
+        System.out.println("\ntest1");
+        Test1 test1 = context.getBean("test1", Test1.class);
+        System.out.println(test1);
+
+        System.out.println("\ntest2");
+        Test2 test2 = context.getBean("test2", Test2.class);
+        System.out.println(test2);
+
+        // component 에 이름을 주지 않았음
+        System.out.println("\ntest3");
+        Test3 test3 = context.getBean(Test3.class);
+        System.out.println(test3);
+
+        // component 에 이름을 줬음
+        System.out.println("\ntest4");
+        Test4 test4 = context.getBean("comp4", Test4.class);
+        System.out.println(test4);
+
+        // component 에 이름을 주지 않았음
+        System.out.println("\ntest5");
+        Test5 test5 = context.getBean(Test5.class);
+        System.out.println(test5);
+    }
+
+}
+            </xmp>
+        </div>
+    </div>
+</section>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>

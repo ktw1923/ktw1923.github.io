@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/TIL_style.css">
+    <title>Title</title>
+</head>
+<body>
+<section class="ftco-section">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">2024년 4월 26일 오전/오후</h2>
+        </div>
+    </div>
+    <div class="remote">
+        <button onclick="goBack()" class="btn btn-primary">뒤로가기</button>
+    </div>
+    <div class="position-center">
+        <div class="code-area">
+            <h4 class="code-head">DB와 연동하여 회원가입 및 로그인 기능이 있는 사이트</h4>
+            <h5 class="code-head">MemberBean</h5>
+            <xmp class="code-text">
+package bean;
+
+import lombok.Data;
+import lombok.ToString;
+
+@Data
+@ToString
+public class MemberBean {
+    private String id;
+    private String password;
+    private String name;
+    private int age;
+}
+            </xmp>
+            <h5 class="code-head">MemberDAO</h5>
+            <xmp class="code-text">
+package DAO;
+
+import bean.MemberBean;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+import static database.MySQL.*;
+
+public class MemberDAO {
+    private static MemberDAO instance = new MemberDAO();
+    private Connection conn = null;
+    private String sql = "";
+    private PreparedStatement pstmt = null;
+    private ResultSet rs = null;
+
+    public static MemberDAO getInstance() {
+        return instance;
+    }
+
+    public void insertMember(MemberBean member) {
+        sql = "insert into member values(?,?,?,?)";
+
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, member.getId());
+            pstmt.setString(2, member.getPassword());
+            pstmt.setString(3, member.getName());
+            pstmt.setInt(4, member.getAge());
+
+            pstmt.executeUpdate();
+        }catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            closeConnection(conn, pstmt, rs);
+        }
+    }
+
+    public MemberBean selectMember(String id) {
+        sql = "select * from member where id = ?";
+        MemberBean searchedMember = null;
+
+        try{
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, id);
+            rs = pstmt.executeQuery();
+
+            while(rs.next()) {
+                searchedMember = new MemberBean();
+                searchedMember.setId(rs.getString("id"));
+                searchedMember.setPassword(rs.getString("password"));
+                searchedMember.setName(rs.getString("name"));
+                searchedMember.setAge(rs.getInt("age"));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            closeConnection(conn, pstmt, rs);
+        }
+
+        return searchedMember;
+    }
+}
+            </xmp>
+            <h5 class="code-head">signUp</h5>
+            <xmp class="code-text">
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+</head>
+<body>
+    <form method="post" action="signUpValidation.jsp">
+        아이디: <input type="text" name="id" maxlength="50"><br>
+        비밀번호: <input type="password" name="password" maxlength="16"><br>
+        이름: <input type="text" name="name" maxlength="10"><br>
+        나이: <input type="number" name="age"><br>
+
+        <input type="submit" value="회원가입">
+    </form>
+</body>
+</html>
+            </xmp>
+            <h5 class="code-head">signUpValidation</h5>
+            <xmp class="code-text">
+<%@ page import="static DAO.MemberDAO.getInstance" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+</head>
+<body>
+    <jsp:useBean id="newMember" class="bean.MemberBean">
+        <jsp:setProperty name="newMember" property="*"/>
+    </jsp:useBean>
+
+    <%
+        if(newMember.getId() == null){
+    %>
+    <script>
+        alert("아이디를 입력해주세요");
+        history.go(-1);
+    </script>
+    <%
+        }else{
+            getInstance().insertMember(newMember);
+            response.sendRedirect("welcome.jsp?id="+newMember.getId());
+        }
+    %>
+</body>
+</html>
+            </xmp>
+            <h5 class="code-head">welcome</h5>
+            <xmp class="code-text">
+<%@ page import="bean.MemberBean" %>
+<%@ page import="static DAO.MemberDAO.getInstance" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+</head>
+<body>
+    <%
+        String id = request.getParameter("id");
+        MemberBean currentMember = getInstance().selectMember(id);
+    %>
+
+    <h1>환영합니다! <%=currentMember.getName()%></h1>
+</body>
+</html>
+            </xmp>
+        </div>
+    </div>
+</section>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>

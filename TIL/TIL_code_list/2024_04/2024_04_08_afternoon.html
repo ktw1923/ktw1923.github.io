@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/TIL_style.css">
+    <title>Title</title>
+</head>
+<body>
+<section class="ftco-section">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">2024년 4월 8일 오후</h2>
+        </div>
+    </div>
+    <div class="remote">
+        <button onclick="goBack()" class="btn btn-primary">뒤로가기</button>
+    </div>
+    <div class="position-center">
+        <div class="code-area">
+            <h4 class="code-head">요청사항을 입력하면 복사해서 출력한다.</h4>
+            <xmp class="code-text">
+<!DOCTYPE html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+    </style>
+</head>
+<body>
+<div id="delivery">
+    <h1>택배 요청사항</h1>
+    <input type="text" id="user">
+    <p>
+        <b>입력한 내용: </b><span id="copiedText"></span>
+    </p>
+</div>
+<script>
+    $('#user').keyup(function () {
+        let inputText = $('#user').val();
+        $('#copiedText').text(inputText);
+    })
+</script>
+</body>
+
+</html>
+            </xmp>
+            <h4 class="code-head">버튼을 누르면 해당 버튼에 할당된 이미지를 보여줌</h4>
+            <xmp class="code-text">
+<!DOCTYPE html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+        .buttonArea .active{
+            background-color: pink;
+        }
+    </style>
+</head>
+<body>
+<div class="imageSelectArea">
+    <h1>images</h1>
+    <div class="buttonArea">
+        <button class="btn active">개.png</button>
+        <button class="btn">고양이.jpg</button>
+    </div>
+    <div class="imagePrintArea">
+        <img src="개.png">
+    </div>
+</div>
+<script>
+    $('.btn').click(function () {
+        $(this).addClass('active');
+        $(this).siblings().removeClass('active');
+        $('.imagePrintArea img').attr('src', $('.active').text())
+    })
+</script>
+</body>
+
+</html>
+            </xmp>
+        </div>
+    </div>
+</section>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>

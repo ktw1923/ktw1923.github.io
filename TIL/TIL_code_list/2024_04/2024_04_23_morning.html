@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/TIL_style.css">
+    <title>Title</title>
+</head>
+<body>
+<section class="ftco-section">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">2024년 4월 23일 오전</h2>
+        </div>
+    </div>
+    <div class="remote">
+        <button onclick="goBack()" class="btn btn-primary">뒤로가기</button>
+    </div>
+    <div class="position-center">
+        <div class="code-area">
+            <h4 class="code-head">폼에서 입력받은 정보를 빈에 저장 후 mysql에 저장</h4>
+            <h5 class="code-head">MemberBean</h5>
+            <xmp class="code-text">
+create table member(
+    id varchar(30),
+    password varchar(30),
+    email varchar(30),
+    tel varchar(30),
+    hobby varchar(30),
+    job varchar(30),
+    age varchar(30),
+    info varchar(30)
+);
+            </xmp>
+            <h5 class="code-head">JSP</h5>
+            <xmp class="code-text">
+<%@ page import="java.sql.Connection" %>
+<%@ page import="java.sql.DriverManager" %>
+<%@ page import="java.sql.PreparedStatement" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+    <%
+        request.setCharacterEncoding("UTF-8");
+        String[] hobbies = request.getParameterValues("hobby");
+        String hobby = "";
+
+        //배열에 있는 내용을 하나의 문자열로 나열
+        for(String str : hobbies){
+         hobby += str + " ";
+        }
+    %>
+
+    <jsp:useBean id="newMember" class="com.jihun.jihunArtifact.MemberBean">
+        <jsp:setProperty name="newMember" property="*" />
+    </jsp:useBean>
+
+    <%
+        newMember.setHobby(hobby);
+
+        String id = "root";
+        String password = "1030";
+        String url = "jdbc:mysql://localhost:3306/practice";
+
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            }catch (ClassNotFoundException e){
+            e.printStackTrace();
+        }
+
+        try{
+            Connection con = DriverManager.getConnection(url, id, password);
+            String sql = "insert into member values(?,?,?,?,?,?,?,?)";
+
+            PreparedStatement ps = con.prepareStatement(sql);
+
+            ps.setString(1, newMember.getId());
+            ps.setString(2, newMember.getPassword());
+            ps.setString(3, newMember.getEmail());
+            ps.setString(4, newMember.getTel());
+            ps.setString(5, newMember.getHobby());
+            ps.setString(6, newMember.getJob());
+            ps.setString(7, newMember.getAge());
+            ps.setString(8, newMember.getInfo());
+
+            ps.executeUpdate();
+
+            ps.close();
+            con.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    %>
+</body>
+</html>
+            </xmp>
+        </div>
+    </div>
+</section>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>

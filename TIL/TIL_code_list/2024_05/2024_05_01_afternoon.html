@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/TIL_style.css">
+    <title>Title</title>
+</head>
+<body>
+<section class="ftco-section">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">2024년 5월 1일 오후</h2>
+        </div>
+    </div>
+    <div class="remote">
+        <button onclick="goBack()" class="btn btn-primary">뒤로가기</button>
+    </div>
+    <div class="position-center">
+        <div class="code-area">
+            <h4 class="code-head">컨테이너를 이용해서 빈을 생성하고 사용해보기</h4>
+            <h5 class="code-head">Test1.java</h5>
+            <xmp class="code-text">
+package beans;
+
+public class Test {
+    public Test(){
+        System.out.println("test");
+    }
+
+    public void test_init(){
+        System.out.println("test_init");
+    }
+
+    public void test_destroy(){
+        System.out.println("test_destroy");
+    }
+}
+            </xmp>
+            <h5 class="code-head">Test2.java</h5>
+            <xmp class="code-text">
+package beans;
+
+public class Test2 {
+    public Test2(){
+        System.out.println("test2");
+    }
+
+    public void default_init(){
+        System.out.println("test2_default_init");
+    }
+
+    public void default_destroy(){
+        System.out.println("test2_default_destroy");
+    }
+}
+            </xmp>
+            <h5 class="code-head">Test3.java</h5>
+            <xmp class="code-text">
+package beans;
+
+public class Test3 {
+    public Test3(){
+        System.out.println("test3");
+    }
+
+    public void default_init(){
+        System.out.println("test3_default_init");
+    }
+
+    public void default_destroy(){
+        System.out.println("test3_default_destroy");
+    }
+
+    public void test3_init(){
+        System.out.println("test3_init");
+    }
+
+    public void test3_destroy(){
+        System.out.println("test3_destroy");
+    }
+}
+            </xmp>
+            <h5 class="code-head">Test4.java</h5>
+            <xmp class="code-text">
+package beans;
+
+public class Test4 {
+    public Test4(){
+        System.out.println("test4");
+    }
+}
+            </xmp>
+            <h5 class="code-head">beans.xml</h5>
+            <xmp class="code-text">
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	                    http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-init-method="default_init" default-destroy-method="default_destroy">
+
+<!--    객체가 생성된 후 행성자 호출 이후 init-method에 등록된 함수가 자동으로 호출됨-->
+<!--    IoC 컨테이너를 닫으면 객체가 소멸되면서 destroy-method에 등록된 함수가 자동으로 호출됨-->
+    <bean class="beans.Test" id="test1" lazy-init="true" init-method="test_init" destroy-method="test_destroy"/>
+
+    <bean id="test2" class="beans.Test2" lazy-init="true"/>
+
+    <bean id="test3" class="beans.Test3" lazy-init="true" init-method="test3_init" destroy-method="test3_destroy"/>
+
+    <bean id="test4" class="beans.Test4" lazy-init="true"/>
+
+</beans>
+            </xmp>
+            <h5 class="code-head">MainClass.java</h5>
+            <xmp class="code-text">
+package main;
+
+import beans.Test;
+import beans.Test2;
+import beans.Test3;
+import beans.Test4;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class MainClass {
+    public static void main(String[] args) {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("config/beans.xml");
+
+        System.out.println("test1 객체 불러옴");
+        Test t1 = context.getBean("test1", Test.class);
+        System.out.println(t1);
+
+        // default method가 출력됨
+        System.out.println("\ntest2 객체 불러옴");
+        Test2 t2 = context.getBean("test2", Test2.class);
+        System.out.println(t2);
+
+        System.out.println("\ntest3 객체 불러옴");
+        Test3 t3 = context.getBean("test3", Test3.class);
+        System.out.println(t3);
+
+        // init과 destroy method가 없으므로 아무것도 출력이 안됨
+        System.out.println("\ntest4 객체 불러옴");
+        Test4 t4 = context.getBean("test4", Test4.class);
+        System.out.println(t4);
+
+        // 소멸은 컨테이너에서 불러온 순서의 역순으로 소멸됨
+        System.out.println("\n컨테이너 소멸");
+        context.close();
+
+
+    }
+
+}
+            </xmp>
+        </div>
+    </div>
+</section>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>

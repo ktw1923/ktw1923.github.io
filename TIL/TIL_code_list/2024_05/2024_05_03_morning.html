@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/TIL_style.css">
+    <title>Title</title>
+</head>
+<body>
+<section class="ftco-section">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">2024년 5월 3일 오전</h2>
+        </div>
+    </div>
+    <div class="remote">
+        <button onclick="goBack()" class="btn btn-primary">뒤로가기</button>
+    </div>
+    <div class="position-center">
+        <div class="code-area">
+            <h4 class="code-head">AOP로 관심사 모듈화하기</h4>
+            <h5 class="code-head">advisor/AdvisorClass.java</h5>
+            <xmp class="code-text">
+package advisor;
+
+
+import org.aspectj.lang.ProceedingJoinPoint;
+
+public class AdvisorClass {
+    public void beforeMethod() {
+        System.out.println("Before");
+    }
+
+    public void afterMethod() {
+        System.out.println("After");
+    }
+
+    public Object aroundMethod(ProceedingJoinPoint pj) throws Throwable{
+        System.out.println("around1");
+
+        Object obj = pj.proceed();
+
+        System.out.println("around2");
+
+        return obj;
+    }
+
+    public void afterReturningMethod() {
+        System.out.println("afterReturn");
+    }
+}
+
+            </xmp>
+            <h5 class="code-head">beans/Test.java</h5>
+            <xmp class="code-text">
+package beans;
+
+public class Test {
+    public int test(){
+        System.out.println("test");
+        return 10;
+    }
+}
+
+            </xmp>
+            <h5 class="code-head">beans.xml</h5>
+            <xmp class="code-text">
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
+
+
+    <bean id="test1" class="beans.Test"/>
+    <bean id="advisor" class="advisor.AdvisorClass"/>
+
+    <aop:config>
+        <aop:aspect ref="advisor">
+            <aop:pointcut id="point1" expression="execution(* test())"/>
+            <aop:before method="beforeMethod" pointcut-ref="point1"/>
+            <aop:after method="afterMethod" pointcut-ref="point1"/>
+            <aop:around method="aroundMethod" pointcut-ref="point1"/>
+            <aop:after-returning method="afterReturningMethod" pointcut-ref="point1"/>
+        </aop:aspect>
+    </aop:config>
+</beans>
+            </xmp>
+            <h5 class="code-head">MainClass.java</h5>
+            <xmp class="code-text">
+package main;
+
+import beans.*;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class MainClass {
+    public static void main(String[] args) {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("config/beans.xml");
+        //AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(BeanClass.class);
+
+        Test test1 = context.getBean("test1", Test.class);
+
+        int n = test1.test();
+        System.out.println(n);
+
+        context.close();
+    }
+
+}
+            </xmp>
+            <h4 class="code-head">Annotation을 통한 advisor 설정</h4>
+            <h5 class="code-head">advisor/AdvisorClass.java</h5>
+            <xmp class="code-text">
+package advisor;
+
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+
+@Aspect // advisor 역할을 할 bean 설정
+@Component
+@Order(1)
+public class AdvisorClass {
+    @Before("execution(* message1())")
+    public void test1(){
+        System.out.println("before");
+    }
+
+    @AfterReturning("execution(* message1())")
+    public void test2(){
+        System.out.println("return");
+    }
+    @AfterThrowing("execution(* message1())")
+    public void test3(){
+        System.out.println("throw");
+    }
+
+}
+
+            </xmp>
+            <h5 class="code-head">advisor/AdvisorClass2.java</h5>
+            <xmp class="code-text">
+package advisor;
+
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+
+@Aspect
+@Component
+@Order(2)
+public class AdvisorClass2 {
+    @Around("execution(* message1())")
+    public Object test1(ProceedingJoinPoint joinPoint) throws Throwable {
+        System.out.println("around one");
+
+        Object result = joinPoint.proceed();
+
+        System.out.println("around two");
+
+        return result;
+    }
+
+    @After("execution(* message1())")
+    public void test2(){
+        System.out.println("after");
+    }
+}
+
+            </xmp>
+            <h5 class="code-head">beans.xml</h5>
+            <xmp class="code-text">
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <context:component-scan base-package="advisor"/>
+    <context:component-scan base-package="beans"/>
+
+<!--    bean의 선언 때 annotation으로 지정했던 advisor 설정 불러옴-->
+    <aop:aspectj-autoproxy/>
+</beans>
+            </xmp>
+            <h5 class="code-head">BeanClass.java</h5>
+            <xmp class="code-text">
+package beans;
+
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+
+@Configuration
+@ComponentScan(basePackages = {"beans", "advisor"})
+@EnableAspectJAutoProxy
+public class BeanClass {
+
+}
+
+            </xmp>
+            <h5 class="code-head">MainClass.java</h5>
+            <xmp class="code-text">
+package main;
+
+import beans.*;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class MainClass {
+    public static void main(String[] args) {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("config/beans.xml");
+        AnnotationConfigApplicationContext context2 = new AnnotationConfigApplicationContext(BeanClass.class);
+
+        System.out.println("\nbeans.xml 사용");
+        Test test1 = context.getBean(Test.class);
+        test1.message1();
+
+        System.out.println("\nBeanClass.java 사용");
+        Test test2 = context2.getBean(Test.class);
+        test2.message1();
+
+
+        context.close();
+    }
+
+}
+
+            </xmp>
+        </div>
+    </div>
+</section>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/TIL_style.css">
+    <title>Title</title>
+</head>
+<body>
+<section class="ftco-section">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">2024년 4월 5일 오전</h2>
+        </div>
+    </div>
+    <div class="remote">
+        <button onclick="goBack()" class="btn btn-primary">뒤로가기</button>
+    </div>
+    <div class="position-center">
+        <div class="code-area">
+            <h4 class="code-head">JSONObject와 JSONArray 연습</h4>
+            <xmp class="code-text">
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+public class Main {
+    public static void main(String[] args){
+        JSONArray stu = new JSONArray();
+        JSONObject stu2 = new JSONObject();
+
+        stu2.put("name", "홍길동");
+        stu2.put("tel", "010-1111-2222");
+        stu2.put("address", "seoul");
+        System.out.println(stu2);
+        System.out.println();
+
+        stu.put(stu2);
+        System.out.println(stu);
+    }
+}
+            </xmp>
+            <h4 class="code-head">json 데이터를 가져와서 읽기</h4>
+            <xmp class="code-text">
+student json데이터
+
+{"student":[
+    {
+        "address":"seoul",
+        "phone":"010-1111-2222",
+        "name":"hong"
+    },
+    {
+        "address":"busan",
+        "phone":"010-1234-5678",
+        "name":"kim"
+    }
+]}
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import java.io.InputStream;
+
+public class JsonTest {
+    public static void main(String[] args){
+        String str = "information.json";
+        InputStream is = JsonTest.class.getResourceAsStream(str);
+        if(is == null){
+            throw  new NullPointerException("cannot find file");
+        }
+
+        JSONTokener to = new JSONTokener(is);
+        JSONObject ob = new JSONObject(to);
+        JSONArray arr = ob.getJSONArray("student");
+
+        for(int i = 0; i < arr.length(); i++){
+            JSONObject stu = (JSONObject) arr.get(i);
+            System.out.println(stu.get("name") + "\t");
+            System.out.println(stu.get("address") + "\t");
+            System.out.println(stu.get("phone") + "\t");
+        }
+    }
+}
+            </xmp>
+        </div>
+    </div>
+</section>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>

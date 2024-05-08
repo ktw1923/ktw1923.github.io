@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/TIL_style.css">
+    <title>Title</title>
+</head>
+<body>
+<section class="ftco-section">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">2024년 5월 4일 오후/저녁</h2>
+        </div>
+    </div>
+    <div class="remote">
+        <button onclick="goBack()" class="btn btn-primary">뒤로가기</button>
+    </div>
+    <div class="position-center">
+        <div class="code-area">
+            <h4 class="code-head">문제 설명</h4>
+            <xmp class="code-text">
+1. Computer 인터페이스를 만들고 이를 상속받는 AComputer를 만들어라.
+
+- Hi 클래스를 만들어 String값 하나, AComputer의 객체값 하나 선언하고, 생성자와 set메소드를 만들어라.
+- Beans.xml에서 임의의 값으로 setter, 생성자 주입을 보여라. (주석처리해서 실행)
+- 생성자 주입을 한 후 , 출력결과를 보여라.
+
+2. 1번과 같은 구조이다.
+
+- Hello클래스에 String값 하나, AComputer의 객체값 하나 선언하고, @Autowired, @Qualifier를 통해 주입받는 과정을 보여라. 빈 설정파일은 BBean.java로 설정해라.
+- @Qualifier를 통해 주입할 때 이름은 “oo2”라고 정의해라.
+            </xmp>
+            <h5 class="code-head">beans/Computer.java</h5>
+            <xmp class="code-text">
+package beans;
+
+public interface Computer {
+}
+
+
+beans/AComputer.java
+
+package beans;
+
+public class AComputer implements Computer{
+    public AComputer() {
+        System.out.println("AComputer 생성");
+    }
+}
+            </xmp>
+            <h5 class="code-head">beans/Hi.java</h5>
+            <xmp class="code-text">
+package beans;
+
+public class Hi {
+    private String hiString;
+    private AComputer aComputer;
+
+    public Hi() {
+        System.out.println("Hi");
+        hiString = "안녕하세요";
+        aComputer = new AComputer();
+    }
+
+    public Hi(String hiString) {
+        System.out.println("Hi");
+        this.hiString = hiString;
+        aComputer = new AComputer();
+    }
+
+    public void setHiString(String hiString){
+        this.hiString = hiString;
+    }
+
+    public void setAComputer(AComputer aComputer){
+        this.aComputer = aComputer;
+    }
+
+    public String getHiString(){
+        return hiString;
+    }
+
+    public AComputer getAComputer(){
+        return aComputer;
+    }
+}
+            </xmp>
+            <h5 class="code-head">beans/Hello.java</h5>
+            <xmp class="code-text">
+package beans;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
+@Service
+public class Hello {
+    private String helloString;
+    @Autowired
+    @Qualifier("oo2")
+    private AComputer aComputer;
+
+    public Hello() {
+        System.out.println("Hello");
+        helloString = "안녕하세요";
+        aComputer = new AComputer();
+    }
+
+    public Hello(String hiString) {
+        System.out.println("Hello");
+        this.helloString = hiString;
+        aComputer = new AComputer();
+    }
+
+    public void setHelloString(String helloString){
+        this.helloString = helloString;
+    }
+
+    public void setAComputer(AComputer aComputer){
+        this.aComputer = aComputer;
+    }
+
+    public String getHelloString(){
+        return helloString;
+    }
+
+    public AComputer getAComputer(){
+        return aComputer;
+    }
+}
+            </xmp>
+            <h5 class="code-head">Beans.xml</h5>
+            <xmp class="code-text">
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <bean id="hi" class="beans.Hi" lazy-init="true">
+        <constructor-arg value="내일은 금요일"/>
+    </bean>
+
+    <bean id="hi2" class="beans.Hi" lazy-init="true">
+        <property name="hiString" value="곧 3일 연휴다"/>
+        <property name="AComputer">
+            <bean class="beans.AComputer"/>
+        </property>
+    </bean>
+</beans>
+            </xmp>
+            <h5 class="code-head">BBean.java</h5>
+            <xmp class="code-text">
+package beans;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
+
+@Configuration
+public class BBean {
+
+    @Bean
+    @Lazy
+    public Hello hello(){
+        return new Hello();
+    }
+
+    @Bean
+    @Lazy
+    public AComputer oo2(){
+        return new AComputer();
+    }
+}
+            </xmp>
+            <h5 class="code-head">MainClass.java</h5>
+            <xmp class="code-text">
+package main;
+
+import beans.*;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class MainClass {
+    public static void main(String[] args) {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("config/beans.xml");
+        AnnotationConfigApplicationContext context2 = new AnnotationConfigApplicationContext(BBean.class);
+
+        System.out.println("1번\n");
+
+        System.out.println("첫번째 Hi 생성");
+        Hi hi = (Hi) context.getBean("hi");
+        System.out.println(hi.getHiString());
+        System.out.println(hi.getAComputer());
+
+        System.out.println("\n두번째 Hi 생성");
+        Hi hi2 = (Hi) context.getBean("hi2");
+        System.out.println(hi2.getHiString());
+        System.out.println(hi2.getAComputer());
+
+        System.out.println("\n2번\n");
+
+        Hello hello = (Hello) context2.getBean("hello");
+        System.out.println(hello.getHelloString());
+        System.out.println(hello.getAComputer());
+    }
+
+}
+            </xmp>
+        </div>
+    </div>
+</section>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>

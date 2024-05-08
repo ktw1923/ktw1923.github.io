@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/TIL_style.css">
+    <title>Title</title>
+</head>
+<body>
+<section class="ftco-section">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">2024년 4월 11일 오후</h2>
+        </div>
+    </div>
+    <div class="remote">
+        <button onclick="goBack()" class="btn btn-primary">뒤로가기</button>
+    </div>
+    <div class="position-center">
+        <div class="code-area">
+            <h4 class="code-head">마우스를 그림 위에 올리면 5초 후 네이버로 이동</h4>
+            <xmp class="code-text">
+<!DOCTYPE html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+
+    </style>
+</head>
+<body>
+<img id="im" src="개.png" onmouseover="start(5000)"
+     onmouseout="cancel()">
+
+<script>
+    let n=null;
+    //이미지에 마우스오버하면 5초후 naver.com으로 이동되면서
+    //이미지위에 "시작!!" 출력
+    function start(t){
+        n=setTimeout("load('http://www.naver.com')",t);
+        document.getElementById('im').title='시작!!';
+    }
+    function cancel(){
+        if(n!=null){
+            clearTimeout(n); //타임 중단
+        }
+    }
+    function load(url){
+        window.location=url;
+    }
+
+
+</script>
+</body>
+
+</html>
+            </xmp>
+            <h4 class="code-head">배열을 이용해서 본문에 하이퍼링크 추가</h4>
+            <xmp class="code-text">
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+
+        $(document).ready(function(){
+            let array=[{name:'kim', link:'http://naver.com'},
+                {name:'lee', link:'http://daum.net'}
+            ];
+            $.each(array, function(index, item){
+                let n='';
+                n+='<a href="'+item.link+'">'
+                n+='<h2>'+item.name+'</h2>';
+                n+='</a>';
+                document.body.innerHTML+=n;
+            });
+        })
+    </script>
+</head>
+<body>
+
+<script>
+</script>
+</body>
+
+</html>
+            </xmp>
+        </div>
+    </div>
+</section>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>

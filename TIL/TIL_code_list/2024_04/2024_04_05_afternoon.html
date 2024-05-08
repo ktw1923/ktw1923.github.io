@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/TIL_style.css">
+    <title>Title</title>
+</head>
+<body>
+<section class="ftco-section">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">2024년 4월 5일 오후</h2>
+        </div>
+    </div>
+    <div class="remote">
+        <button onclick="goBack()" class="btn btn-primary">뒤로가기</button>
+    </div>
+    <div class="position-center">
+        <div class="code-area">
+            <h4 class="code-head">next(), prev(), nextAll(), nextUntil(), prevAll(), prevUntil() 활용</h4>
+            <xmp class="code-text">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="parent">
+    <div class="ch1">One</div>
+    <div>Two</div>
+    <div>Three</div>
+    <div id="ch2">Four</div>
+    <div>Five</div>
+    <div>Six</div>
+    <div class="ch3">Seven</div>
+</div>
+<br>
+<div class="parent">
+    <div>One</div>
+    <div class="ch4">Two</div>
+    <div>Three</div>
+    <div id="ch5">Four</div>
+    <div>Five</div>
+    <div class="ch6">Six</div>
+    <div>Seven</div>
+</div>
+<script>
+    $('#ch2').next().css('background-color', 'yellow');
+    $('#ch2').next().nextAll().css('background-color', 'orange');
+    $('#ch2').prev().css('background-color', 'green');
+
+
+    $('#ch5').prevAll().css('background-color', 'yellow');
+    //특정 태그를 찾을 때 까지 적용
+    $('#ch5').nextUntil('.ch6').css('background-color', 'orange');
+    $('#ch5').prevUntil('.ch4').css('background-color', 'orange');
+</script>
+</body>
+</html>
+            </xmp>
+            <h4 class="code-head">버튼을 선택하면 빨갛게 바뀌고, 다른 버튼을 누르면 그 버튼만 빨개지는 코드</h4>
+            <xmp class="code-text">
+<!DOCTYPE html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+        .size button.selected{
+            background-color: red;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div class="shoes">
+    <div class="size">
+        <h2>사이즈 선택</h2>
+        <button>225</button>
+        <button>230</button>
+        <button>235</button>
+        <button>240</button>
+        <button>245</button>
+        <button>250</button>
+    </div>
+</div>
+<script>
+    $('.size button').click(function(){
+        $(this).addClass('selected');
+        $(this).siblings().removeClass('selected');
+    })
+</script>
+</body>
+</html>
+            </xmp>
+        </div>
+    </div>
+</section>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>

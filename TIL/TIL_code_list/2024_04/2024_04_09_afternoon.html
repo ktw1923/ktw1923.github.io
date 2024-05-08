@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/TIL_style.css">
+    <title>Title</title>
+</head>
+<body>
+<section class="ftco-section">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">2024년 4월 9일 오후</h2>
+        </div>
+    </div>
+    <div class="remote">
+        <button onclick="goBack()" class="btn btn-primary">뒤로가기</button>
+    </div>
+    <div class="position-center">
+        <div class="code-area">
+            <h4 class="code-head">헤더의 앵커를 누르면 해당 구역으로 천천히 이동하는 페이지</h4>
+            <xmp class="code-text">
+<!DOCTYPE html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+        header{
+            background-color: pink;
+            height: 50px;
+            width: 100%;
+            display: flex;
+            justify-content: right;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        body div{
+            height: 100vh;
+            width: 100%;
+            margin: 0px;
+            padding: 0px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: xx-large;
+            font-weight: bold;
+        }
+
+        #section1, #section3{
+            background-color: rgba(128, 128, 128, 0.78);
+        }
+
+        #section2, #section4{
+            background-color: rgba(245, 245, 245, 0.688);
+        }
+
+        body header a{
+            text-decoration: none;
+            color: salmon;
+            margin: 5px;
+        }
+
+    </style>
+</head>
+<body>
+<header>
+    <a href="#section1">section #01</a>
+    <a href="#section2">section #02</a>
+    <a href="#section3">section #03</a>
+    <a href="#section4">section #04</a>
+</header>
+
+<div id="section1">Section #01</div>
+<div id="section2">Section #02</div>
+<div id="section3">Section #03</div>
+<div id="section4">Section #04</div>
+<script>
+    $('header a').click(function () {
+        let position = $(this).attr('href');
+        $('html, body').animate({
+            scrollTop:$(position).offset().top
+        }, 500);
+    });
+</script>
+
+</body>
+
+</html>
+            </xmp>
+            <h4 class="code-head">스크롤바를 움직이면 그에 맞에 기사의 글자 크기가 바뀌는 페이지</h4>
+            <xmp class="code-text">
+<!DOCTYPE html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+        body{
+            display: flex;
+            justify-content: center;
+        }
+
+        #articleBox{
+            width: 30%;
+            box-shadow: 0px 0px 10px gray;
+            padding: 20px;
+            position: absolute;
+            top: 100px;
+        }
+
+        #fontSize{
+            width: 15px;
+        }
+
+        #sizeRange{
+            accent-color: black;
+        }
+
+    </style>
+</head>
+<body>
+<div id="articleBox">
+    <span id="fontSize">15px</span>
+    <input id="sizeRange" type="range" value="15">
+    <hr>
+    <div id="article">
+        [스포츠조선 노재형 기자]LA 다저스 오타니 쇼헤이가 최근 타격감이 좋아진 이유로 이적 후 첫 홈런을 터뜨린 것을 꼽았다.
+        오타니는 9일(이하 한국시각) 미네소타주 미니애폴리스 타깃필드에서 미네소타 트윈스와의 경기를 앞두고 가진 현지 매체들과 인터뷰를 갖고
+        "(이전과)가장 큰 차이는 마음 편하게 부담없이 타석에 들어간다는 것"이라고 밝혔다.
+    </div>
+</div>
+<script>
+    $('#sizeRange').on('input', function () {
+        $('#fontSize').text($('#sizeRange').val() + 'px');
+        $('#article').css('fontSize', $('#sizeRange').val() + 'px');
+
+    })
+</script>
+</body>
+</html>
+            </xmp>
+        </div>
+    </div>
+</section>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>

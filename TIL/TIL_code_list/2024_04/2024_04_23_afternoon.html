@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/TIL_style.css">
+    <title>Title</title>
+</head>
+<body>
+<section class="ftco-section">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">2024년 4월 23일 오후</h2>
+        </div>
+    </div>
+    <div class="remote">
+        <button onclick="goBack()" class="btn btn-primary">뒤로가기</button>
+    </div>
+    <div class="position-center">
+        <div class="code-area">
+            <h4 class="code-head">값을 데이터베이스에 저장후 모든 값을 배열 형식으로 받아서 테이블로 출력</h4>
+            <h5 class="code-head">DAO</h5>
+            <xmp class="code-text">
+package DAO;
+
+import com.jihun.jihunArtifact.MovieBean;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static database.MySQL.closeConnection;
+import static database.MySQL.getConnection;
+
+public class MovieDAO {
+    Connection con;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+
+    public void insertMovie(MovieBean movieBean){
+        String sql = "insert into movie values(?,?,?,?,?)";
+
+        try{
+            con = getConnection();
+            ps = con.prepareStatement(sql);
+
+            ps.setString(1, movieBean.getTitle());
+            ps.setInt(2, Integer.parseInt(movieBean.getPrice()));
+            ps.setString(3,movieBean.getDirector());
+            ps.setString(4,movieBean.getSynopsis());
+            ps.setString(5,movieBean.getGenre());
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            closeConnection(con, ps, null);
+        }
+    }
+
+    public List<MovieBean> getMovieList(){
+        String sql = "select * from movie";
+        List<MovieBean> movieBeanList = new ArrayList<MovieBean>();
+
+        try{
+            con = getConnection();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            while(rs.next()){
+                MovieBean movieBean = new MovieBean();
+                movieBean.setTitle(rs.getString("title"));
+                movieBean.setPrice(rs.getString("price"));
+                movieBean.setDirector(rs.getString("director"));
+                movieBean.setSynopsis(rs.getString("synopsis"));
+                movieBean.setGenre(rs.getString("genre"));
+                movieBeanList.add(movieBean);
+            }
+
+            return movieBeanList;
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }finally {
+            closeConnection(con, ps, rs);
+        }
+    }
+}
+            </xmp>
+            <h5 class="code-head">입력 폼</h5>
+            <xmp class="code-text">
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+</head>
+<body>
+<form action="movie2.jsp" method="post">
+    <table>
+        <tr><td>영화제목</td> <td><input type="text" name="title"></tr>
+        <tr><td>가격</td> <td><input type="text" name="price"></tr>
+        <tr><td>감독</td> <td><input type="text" name="director"></tr>
+        <tr><td>시놉시스</td> <td><textarea name="synopsis"></textarea></tr>
+        <tr><td>장르</td>
+            <td><select name="genre">
+                <option value="호러">호러
+                <option value="멜로">멜로
+                <option value="코미디">코미디
+            </select>
+    </table>
+    <input type="submit" value="전송">
+</form>
+</body>
+</html>
+            </xmp>
+            <h5 class="code-head">정보를 데이터베이스에 저장</h5>
+            <xmp class="code-text">
+<%@ page import="DAO.MovieDAO" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+    <jsp:useBean id="newMovie" class="com.jihun.jihunArtifact.MovieBean">
+        <jsp:setProperty name="newMovie" property="*" />
+    </jsp:useBean>
+
+    <%
+        MovieDAO mDAO = new MovieDAO();    //Data Access Object
+        mDAO.insertMovie(newMovie);
+
+        response.sendRedirect("movieArray.jsp");
+    %>
+</body>
+</html>
+            </xmp>
+            <h5 class="code-head">데이터베이스의 정보를 표 형식으로 출력</h5>
+            <xmp class="code-text">
+<%@ page import="com.jihun.jihunArtifact.MovieBean" %>
+<%@ page import="java.util.List" %>
+<%@ page import="DAO.MovieDAO" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+</head>
+<body>
+    <%
+        List<MovieBean> movieList = new MovieDAO().getMovieList();
+    %>
+    <h1>영화 목록</h1>
+    <table border="1">
+        <tr>
+            <td>제목</td><td>가격</td><td>감독</td><td>줄거리</td><td>장르</td>
+        </tr>
+        <%
+            for(MovieBean movieBean : movieList) {
+        %>
+        <tr>
+            <td><%=movieBean.getTitle()%></td>
+            <td><%=movieBean.getPrice()%></td>
+            <td><%=movieBean.getDirector()%></td>
+            <td><%=movieBean.getGenre()%></td>
+            <td><a href="movieSynopsis.jsp?synopsis=<%=movieBean.getSynopsis()%>">줄거리 보기</a> </td>
+        </tr>
+        <%
+            }
+        %>
+    </table>
+</body>
+</html>
+            </xmp>
+            <h5 class="code-head">줄거리 보기를 누를 경우 줄거리 출력</h5>
+            <xmp class="code-text">
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+</head>
+<body>
+    <%
+        String synopsis = request.getParameter("synopsis");
+    %>
+    <br>
+    <span style="border: 1px solid green; color: chocolate; padding: 20px">
+        <%=synopsis%>
+    </span>
+</body>
+</html>
+            </xmp>
+        </div>
+    </div>
+</section>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>

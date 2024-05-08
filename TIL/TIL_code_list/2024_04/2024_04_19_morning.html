@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/TIL_style.css">
+    <title>Title</title>
+</head>
+<body>
+<section class="ftco-section">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">2024년 4월 19일 오전</h2>
+        </div>
+    </div>
+    <div class="remote">
+        <button onclick="goBack()" class="btn btn-primary">뒤로가기</button>
+    </div>
+    <div class="position-center">
+        <div class="code-area">
+            <h4 class="code-head">로그인 시 아이디와 비밀번호를 검증하고 다음 페이지로 넘김</h4>
+            <h5 class="code-head">로그인 페이지</h5>
+            <xmp class="code-text">
+<%@ page import="static java.lang.System.out" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+    </style>
+</head>
+<body>
+<form method="post" action="login.jsp">
+    <label for="userid">아이디: </label>
+    <input type="text" name="id" id="userid"><br>
+
+    <label for="userPassword">암 호: </label>
+    <input type="password" name="userPassword" id="userPassword"><br>
+
+    <input type="submit" value="로그인">
+</form>
+</body>
+</html>
+            </xmp>
+            <h5 class="code-head">검증 페이지</h5>
+            <xmp class="code-text">
+<%@ page import="java.net.URLEncoder" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+<%
+    request.setCharacterEncoding("UTF-8");
+    String myId = "jihun";
+    String id = request.getParameter("id");
+    String myPassword = "1234";
+    String password = request.getParameter("userPassword");
+    String name = "엄지훈";
+
+    if(myId.equals(id) && password.equals(myPassword)) {
+        //name값을 가지고 main2로 페이지 강제이동
+        response.sendRedirect("main2.jsp?name=" + URLEncoder.encode(name,  "UTF-8"));
+    }else{
+        response.sendRedirect("practice.jsp");
+    }
+%>
+</body>
+</html>
+            </xmp>
+            <h5 class="code-head">로그인 성공 페이지</h5>
+            <xmp class="code-text">
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+</head>
+<body>
+<%
+    request.setCharacterEncoding("UTF-8");
+    String name = request.getParameter("name");
+
+    out.print("<h1>환영합니다 " + name + "님!</h1>");
+%>
+</body>
+</html>
+            </xmp>
+        </div>
+    </div>
+</section>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>
